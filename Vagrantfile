@@ -13,18 +13,17 @@ Vagrant.configure("2") do |config|
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
   
-  # VM 1 : Ubuntun hashicorp/bionic64 v1.0.282
-  config.vm.define "UBUNTU-VM" do |ubuntuvm|
-    ubuntuvm.vm.box = "hashicorp/bionic64"
-    ubuntuvm.vm.box_version = "1.0.282"
-    ubuntuvm.vm.hostname = "VM-UBUNTU"
-    ubuntuvm.vm.box_url = "https://vagrantcloud.com/hashicorp/bionic64"
+  # VM 1 : Debian buster64
+  config.vm.define "DEBIAN-VM" do |ubuntuvm|
+    ubuntuvm.vm.box = "debian/buster64"
+    ubuntuvm.vm.hostname = "DEBIAN-VM"
+    ubuntuvm.vm.box_url = "debian/buster64"
     
-    # # provision Nano text editor
-    # config.vm.provision "shell", inline: <<-SHELL
-    #   apt-get update
-    #   apt-get install -y nano
-    # SHELL
+    # provision Nano text editor / wget /curl
+    config.vm.provision "shell", inline: <<-SHELL
+      apt-get update -qq >/dev/null
+      apt-get install -y nano wget curl
+    SHELL
 
     # install Docker Community last version
     config.vm.provision "docker" do |docker|
