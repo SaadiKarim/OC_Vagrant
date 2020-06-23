@@ -20,14 +20,19 @@ Vagrant.configure("2") do |config|
     ubuntuvm.vm.hostname = "VM-UBUNTU"
     ubuntuvm.vm.box_url = "https://vagrantcloud.com/hashicorp/bionic64"
     
-    # provision Nano text editor
-    config.vm.provision "shell", inline: <<-SHELL
-      apt-get update
-      apt-get install -y nano
-    SHELL
+    # # provision Nano text editor
+    # config.vm.provision "shell", inline: <<-SHELL
+    #   apt-get update
+    #   apt-get install -y nano
+    # SHELL
 
     # install Docker Community last version
-    config.vm.provision :docker
+    config.vm.provision "docker" do |docker|
+      docker.build_image "/vagrant/", 
+        args: "-t debianOC"
+      docker.run "debianOC",
+        args: "-p 80:8080"
+    end
   end
 
   # Disable automatic box update checking. If you disable this, then
