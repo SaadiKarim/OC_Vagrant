@@ -21,8 +21,11 @@ Vagrant.configure("2") do |config|
     
     # provision Nano text editor / wget /curl
     config.vm.provision "shell", inline: <<-SHELL
+      export DEBIAN_FRONTEND=noninteractive # to prevent stdin access    
       apt-get update -qq >/dev/null
-      apt-get install -y nano wget curl
+      # ansible installed with apt instead of vagrant built-in because we don't need it for now
+      # to update for next projects 
+      apt-get install -y nano wget curl ansible need
     SHELL
 
     # install Docker Community last version
