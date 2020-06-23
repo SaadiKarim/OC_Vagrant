@@ -21,7 +21,7 @@ Vagrant.configure("2") do |config|
     ubuntuvm.vm.box_url = "https://vagrantcloud.com/hashicorp/bionic64"
     
     # provision Nano text editor
-      config.vm.provision "shell", inline: <<-SHELL
+    config.vm.provision "shell", inline: <<-SHELL
       apt-get update
       apt-get install -y nano
     SHELL
