@@ -13,14 +13,12 @@ Vagrant.configure("2") do |config|
   # Every Vagrant development environment requires a box. You can search for
   # boxes at https://vagrantcloud.com/search.
   
-  # VM 1 : Debian buster64
   config.vm.define "DEBIAN-VM" do |ubuntuvm|
     ubuntuvm.vm.box = "debian/buster64"
     ubuntuvm.vm.hostname = "DEBIAN-VM"
     ubuntuvm.vm.box_url = "debian/buster64"
-    
     # provision Nano text editor / wget /curl
-    config.vm.provision "shell", inline: <<-SHELL
+    ubuntuvm.vm.provision "shell", inline: <<-SHELL
       # to prevent stdin access    
       export DEBIAN_FRONTEND=noninteractive 
       # stdout to null to prevent logs
@@ -29,14 +27,17 @@ Vagrant.configure("2") do |config|
       # to update for next projects 
       apt-get install -y nano wget curl ansible
     SHELL
-
-    # install Docker Community last version
-    config.vm.provision "docker" do |docker|
+    # install Docker Community latest version
+    ubuntuvm.vm.provision "docker" do |docker|
+      # build image from Dockerfile
       docker.build_image "/vagrant/", 
-        args: "-t debianOC"
-      docker.run "debianOC",
-        args: "-p 80:8080"
+        args: "-t oc-buster-slim"
+      # run container
+      docker.run "oc-buster-slim",
+        args: "-p 8080:80/tcp -p 8022:22/tcp" 
     end
+    ubuntuvm.vm.network "forwarded_port", guest: 8080, host: 8080
+    ubuntuvm.vm.network "forwarded_port", guest: 8022, host: 8022
   end
 
   # Disable automatic box update checking. If you disable this, then
