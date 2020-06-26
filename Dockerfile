@@ -1,7 +1,7 @@
 # use latest stable debian
 FROM debian:stable
 # install nginx and openssh
-RUN apt-get update && apt-get install -y nginx openssh-server
+RUN apt-get -qq update && apt-get -qq install -y nginx openssh-server
 # create a group and user for ssh connection
 RUN groupadd sshgroup && useradd -ms /bin/bash -g sshgroup sshuser
 # add users password

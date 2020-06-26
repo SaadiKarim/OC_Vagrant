@@ -20,11 +20,11 @@ Vagrant.configure("2") do |config|
     debianvm.vm.provision "shell", inline: <<-SHELL
       # to prevent stdin access    
       export DEBIAN_FRONTEND=noninteractive 
-      # stdout to null to prevent logs
-      apt-get update -qq >/dev/null
+      # -qq No output except for errors
+      apt-get -qq update 
       # ansible installed with apt instead of vagrant built-in because we don't need it at the moment
       # to update for next projects 
-      apt-get install -y nano wget curl ansible
+      apt-get -qq install -y nano wget curl ansible
     SHELL
     # install Docker Community latest version
     debianvm.vm.provision "docker" do |docker|
