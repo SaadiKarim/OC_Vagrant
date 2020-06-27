@@ -26,13 +26,20 @@ Vagrant.configure("2") do |config|
       # to update for next projects 
       apt-get -qq install -y nano wget curl ansible
     SHELL
-    # install Docker Community latest version
+
+    # DOCKER : install only -> 
+    # vagrant ssh
+    # docker build --rm -f "/vagrant/OC_Docker/Dockerfile" -t oc-buster-64 "/vagrant/OC_Docker"
+    # docker run --rm -d -p 8080:80/tcp -p 8022:22/tcp oc-buster-64
+    # debianvm.vm.provision "docker"
+
+    # DOCKER : run container on VM bootup
     debianvm.vm.provision "docker" do |docker|
       # build image from Dockerfile
-      docker.build_image "/vagrant/", 
-        args: "-t oc-buster-slim"
+      docker.build_image "/vagrant/OC_Docker", 
+        args: "-t oc-buster-64"
       # run container
-      docker.run "oc-buster-slim",
+      docker.run "oc-buster-64",
         args: "-p 8080:80/tcp -p 8022:22/tcp" 
     end
     debianvm.vm.network "forwarded_port", guest: 8080, host: 8080
